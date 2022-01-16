@@ -1,0 +1,64 @@
+﻿@model PaginatedList<ServerApp.Models.Product>
+
+@{
+    ViewData["Title"] = "Товары";
+}
+
+<h2>Index</h2>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Category
+            </th>
+            <th>
+                Description
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    var firstDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var lastDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-pageNumber="1"
+   class="btn btn-default @firstDisabled">
+    <<
+</a>
+@foreach (var item in Model.Pages.OrderBy(i => i))
+{
+    <a asp-action="Index"
+        asp-route-pageNumber="@item"
+        class="btn btn-default @(Model.PageIndex == item ? "disabled" : "")">
+        @(item)
+    </a>
+}
+<a asp-action="Index"
+   asp-route-pageNumber="@(Model.TotalPages)"
+   class="btn btn-default @lastDisabled">
+   >>
+</a>
